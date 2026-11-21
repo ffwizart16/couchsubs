@@ -1,0 +1,25 @@
+name: Sync Fork
+
+on:
+  schedule:
+    # Her gün gece saat 00:00'da (UTC) çalışır
+    - cron: '0 0 * * *'
+  workflow_dispatch: # İstediğiniz zaman manuel tetikleyebilmek için
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sync upstream changes
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+        with:
+          upstream_sync_repo: yorulmazsinan/couchsubs
+          upstream_sync_branch: main
+          target_sync_branch: main
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
